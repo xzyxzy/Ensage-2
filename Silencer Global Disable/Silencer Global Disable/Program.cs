@@ -50,7 +50,7 @@ namespace Silencer_Global_Disable
                     }
                 }
             }
-            if (Utils.SleepCheck("RefreshGlobal") && Menu.Item("useref").GetValue<bool>() && Menu.Item("globaldisable").GetValue<bool>() && !me.Spellbook.Spell4.CanBeCasted() && me.Mana > me.Spellbook.Spell4.ManaCost + Refresher.ManaCost)
+            if (Utils.SleepCheck("RefreshGlobal") && Menu.Item("useref").GetValue<bool>() && Menu.Item("globaldisable").GetValue<bool>() && !me.Spellbook.Spell4.CanBeCasted() && Refresher.CanBeCasted() && me.Mana > me.Spellbook.Spell4.ManaCost + Refresher.ManaCost)
             {
                 var target = ObjectMgr.GetEntities<Hero>().Where(e => e.Team != me.Team && e.IsAlive && !e.IsIllusion);
                 foreach (var v in target)
