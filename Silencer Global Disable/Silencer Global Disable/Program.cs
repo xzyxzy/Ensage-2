@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Ensage.Common;
 using Ensage;
 using Ensage.Common.Extensions;
 using Ensage.Common.Menu;
-using SharpDX;
-using SharpDX.Direct3D9;
 
 namespace Silencer_Global_Disable
 {
