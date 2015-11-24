@@ -345,14 +345,16 @@ namespace Color_Chat
                         return;
                     }
 
-                    if (args.WParam == 9)
+                    if (args.WParam == 45 || args.WParam == 46 || args.WParam == 19 || args.WParam == 36 || args.WParam == 35 || args.WParam == 34 || args.WParam == 33 || args.WParam == 93 || args.WParam == 91 || args.WParam == 17 || args.WParam == 9 || args.WParam == 16 || args.WParam == 112 || args.WParam == 113 || args.WParam == 114 || args.WParam == 115 || args.WParam == 116 || args.WParam == 117 || args.WParam == 118 || args.WParam == 119 || args.WParam == 120 || args.WParam == 121 || args.WParam == 122 || args.WParam == 123)
                     {
                         return;
                     }
-                    if (args.WParam == 16)
+                    if (args.WParam == 27)
                     {
+                        Command = "";
                         return;
                     }
+
                     if (Game.IsKeyDown(16))
                     {
                         Command += Utils.KeyToText((uint)args.WParam).ToUpper();
@@ -361,6 +363,8 @@ namespace Color_Chat
                     }   
                     else
                         Command += Utils.KeyToText((uint)args.WParam).ToLower();
+                    //Game.PrintMessage(args.WParam.ToString(),MessageType.LogMessage);
+
                         
                     return;
 
