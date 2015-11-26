@@ -210,7 +210,7 @@ namespace Color_Chat
                         {
                             return;
                         }
-                        Command = Romanize(Command);
+                        //Command = Romanize(Command);
                         Game.ExecuteCommand(((team) ? "say_team " : "say ") + stringmodifier + Command);
                         Command = "";
 
