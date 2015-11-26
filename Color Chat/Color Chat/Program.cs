@@ -231,7 +231,7 @@ namespace Color_Chat
                             int hexnum = Int32.Parse(modifiers, System.Globalization.NumberStyles.HexNumber);
                             string stringmodifier = Char.ConvertFromUtf32(hexnum);
                             Command += " " + stringmodifier;
-                            Console.WriteLine(Command);
+                            //Console.WriteLine(Command);
                             return;
                         }
                         Command += " ";
