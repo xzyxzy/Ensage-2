@@ -3,14 +3,17 @@ using Ensage;
 
 using Ensage.Common.Menu;
 using Ensage.Common;
-
+using System.Collections.Generic;
+using System.Text;
 
 namespace Color_Chat
 {
     internal class Program
     {
         private static readonly Menu Menu = new Menu("Color Chat", "chat", true);
+        static Random _r = new Random();
         static string Command;
+        static string modspace;
         static string modifier;
         public static Boolean team;
         enum color
@@ -26,25 +29,101 @@ namespace Color_Chat
             Green,
             Blue,
             White,
-            LimeGreen,
+            Rainbow,
             HotPink,
             VibrantOrange,
             Violet,
             RedishPink
         }
-
+        private static char[] Cyrillic = { 'A', 'a', 'B', 'b', 'C', 'c', 'D', 'd', 'E', 'e', 'F', 'f', 'G', 'g', 'H', 'h', 'I', 'i', 'J', 'j', 'K', 'k', 'L', 'l', 'M', 'm', 'N', 'n', 'O', 'o', 'P', 'p', 'Q', 'q', 'R', 'r', 'S', 's', 'T', 't', 'U', 'u', 'V', 'v', 'W', 'w', 'X', 'x', 'Y', 'y', 'Z', 'z' };
+        private static char[] Latin = { 'А', 'а', 'Б', 'б', 'Ц', 'ц', 'Д', 'д', 'Е', 'е', 'Ф', 'ф', 'Г', 'г', 'Ч', 'ч', 'И', 'и', 'Й', 'й', 'К', 'к', 'Л', 'л', 'М', 'м', 'Н', 'н', 'О', 'о', 'П', 'п', 'Я', 'я', 'Р', 'р', 'С', 'с', 'Т', 'т', 'У', 'у', 'В', 'в', 'Ш', 'ш', 'Х', 'х', 'Ы', 'ы', 'З', 'з' };
+        
 
         static void Main(string[] args)
         {
            
             Game.OnWndProc += Game_OnGameWndProc;
             var menu_utama = new Menu("Options", "opsi");
-            menu_utama.AddItem(new MenuItem("Color", "Color").SetValue(new StringList(new[] { "Olive", "Pink", "Red","Orange","Dark Yellow","Light Green","Purple","Grey","Green","Blue","White","Lime Green","Hot Pink","Vibrant Orange","Violet","Redish Pink" })));
+            menu_utama.AddItem(new MenuItem("Color", "Color").SetValue(new StringList(new[] { "Olive", "Pink", "Red","Orange","Dark Yellow","Light Green","Purple","Grey","Green","Blue","White","Rainbow","Hot Pink","Vibrant Orange","Violet","Redish Pink" })));
+
             Menu.AddSubMenu(menu_utama);
             Menu.AddToMainMenu();
             Game.PrintMessage("Colored Chat by <font color='#ff1111'>Spyware293</font> Loaded !!", MessageType.LogMessage);
            
 
+        }
+        
+        static string rand()
+        {
+            int n = _r.Next(15);
+            
+            switch(n)
+            {
+                case 1:
+                    modspace = "10";
+                    break;
+                case 2:
+                    modspace = "11";
+                    break;
+                case 3:
+                    modspace = "12";
+                    break;
+                case 4:
+                    modspace = "13";
+                    break;
+                case 5:
+                    modspace = "14";
+                    break;
+                case 6:
+                    modspace = "15";
+                    break;
+                case 7:
+                    modspace = "16";
+                    break;
+                case 8:
+                    modspace = "17";
+                    break;
+                case 9:
+                    modspace = "18";
+                    break;
+                case 10:
+                    modspace = "19";
+                    break;
+                case 11:
+                    modspace = "0E";
+                    break;
+                case 12:
+                    modspace = "0F";
+                    break;
+                case 13:
+                    modspace = "1A";
+                    break;
+                case 14:
+                    modspace = "1C";
+                    break;
+                default:
+                    modspace = "12";
+                    break;
+            }
+            return modspace;
+                
+        }
+        public static string Romanize(string russian)
+        {
+            bool isnotfound = false;
+            foreach (char c in russian)
+            {
+                try {
+                    int a = Array.IndexOf(Cyrillic, c);
+                    russian = russian.Replace(Cyrillic[a],Latin[a] );
+                }
+                catch
+                {
+                    isnotfound = true;
+                }
+                if (isnotfound) continue;
+            }
+            return russian;
         }
         public static void Game_OnGameWndProc(WndEventArgs args)
         {
@@ -100,9 +179,9 @@ namespace Color_Chat
                 {
                     modifier = "";
                 }
-                if (Menu.Item("Color").GetValue<StringList>().SelectedIndex == (int)color.LimeGreen)
+                if (Menu.Item("Color").GetValue<StringList>().SelectedIndex == (int)color.Rainbow)
                 {
-                    modifier = "0C";
+                    modifier = rand();
                 }
                 if (Menu.Item("Color").GetValue<StringList>().SelectedIndex == (int)color.HotPink)
                 {
@@ -131,10 +210,12 @@ namespace Color_Chat
                         {
                             return;
                         }
+                        Command = Romanize(Command);
                         Game.ExecuteCommand(((team) ? "say_team " : "say ") + stringmodifier + Command);
                         Command = "";
 
                         return;
+
                     }
                     if (args.WParam == 8)
                     {
@@ -143,6 +224,16 @@ namespace Color_Chat
                     }
                     if (args.WParam == 32)
                     {
+                        if (Menu.Item("Color").GetValue<StringList>().SelectedIndex == (int)color.Rainbow)
+                        {
+                            string modifiers = rand();
+                            
+                            int hexnum = Int32.Parse(modifiers, System.Globalization.NumberStyles.HexNumber);
+                            string stringmodifier = Char.ConvertFromUtf32(hexnum);
+                            Command += " " + stringmodifier;
+                            Console.WriteLine(Command);
+                            return;
+                        }
                         Command += " ";
                         return;
                     }
