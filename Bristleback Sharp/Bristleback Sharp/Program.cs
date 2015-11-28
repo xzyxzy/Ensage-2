@@ -87,7 +87,7 @@ namespace Bristleback_Sharp
             {
                 halberd = _source.FindItem("item_heavens_halberd");
             }
-            if (Menu.Item("Quill").GetValue<StringList>().SelectedIndex == 0 && Quill.CanBeCasted() && _source.CanCast() && Utils.SleepCheck("quill"))
+            if (Menu.Item("Quill").GetValue<StringList>().SelectedIndex == 0 && Quill.CanBeCasted() && _source.CanCast() && Utils.SleepCheck("quill") && !_source.IsChanneling() && !_source.IsInvisible())
             {
                 Quill.UseAbility();
                 Utils.Sleep(150 + Game.Ping, "quill");
