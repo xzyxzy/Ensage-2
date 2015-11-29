@@ -44,8 +44,9 @@ namespace Color_Chat
            
             Game.OnWndProc += Game_OnGameWndProc;
             var menu_utama = new Menu("Options", "opsi");
+            menu_utama.AddItem(new MenuItem("EnableColor", "EnableColor").SetValue(true));
             menu_utama.AddItem(new MenuItem("Color", "Color").SetValue(new StringList(new[] { "Olive", "Pink", "Red","Orange","Dark Yellow","Light Green","Purple","Grey","Green","Blue","White","Rainbow","Hot Pink","Vibrant Orange","Violet","Redish Pink" })));
-
+            //menu_utama.AddItem(new MenuItem("Russia", "Russia").SetValue(true));
             Menu.AddSubMenu(menu_utama);
             Menu.AddToMainMenu();
             Game.PrintMessage("Colored Chat by <font color='#ff1111'>Spyware293</font> Loaded !!", MessageType.LogMessage);
@@ -127,7 +128,7 @@ namespace Color_Chat
         }
         public static void Game_OnGameWndProc(WndEventArgs args)
         {
-            if (Game.IsChatOpen)
+            if (Game.IsChatOpen && Menu.Item("EnableColor").GetValue<bool>())
             {
                 if (args.Msg == 0x0101 && args.WParam == 0x0D)
                 {
@@ -210,7 +211,14 @@ namespace Color_Chat
                         {
                             return;
                         }
-                        //Command = Romanize(Command);
+                        //if (Menu.Item("Russia").GetValue<bool>())
+                        //{
+                            //Command = Romanize(Command);
+                        //}
+                        if (Menu.Item("Color").GetValue<StringList>().SelectedIndex == (int)color.Rainbow)
+                        {
+                            Command = space(Command);
+                        }
                         Game.ExecuteCommand(((team) ? "say_team " : "say ") + stringmodifier + Command);
                         Command = "";
 
@@ -224,16 +232,6 @@ namespace Color_Chat
                     }
                     if (args.WParam == 32)
                     {
-                        if (Menu.Item("Color").GetValue<StringList>().SelectedIndex == (int)color.Rainbow)
-                        {
-                            string modifiers = rand();
-                            
-                            int hexnum = Int32.Parse(modifiers, System.Globalization.NumberStyles.HexNumber);
-                            string stringmodifier = Char.ConvertFromUtf32(hexnum);
-                            Command += " " + stringmodifier;
-                            //Console.WriteLine(Command);
-                            return;
-                        }
                         Command += " ";
                         return;
                     }
@@ -454,7 +452,7 @@ namespace Color_Chat
                     }   
                     else
                         Command += Utils.KeyToText((uint)args.WParam).ToLower();
-                    //Game.PrintMessage(args.WParam.ToString(),MessageType.LogMessage);
+                    
 
                         
                     return;
@@ -464,7 +462,27 @@ namespace Color_Chat
             }
         }
 
-      
+        private static string space(string Command)
+        {
+            char[] array = Command.ToCharArray();
+            Command = "";
+            for (int i = 0;i<array.Length;i++)
+            {
+                if (array[i] == ' ')
+                {
+                    string modifiers = rand();
+                    int hexnum = Int32.Parse(modifiers, System.Globalization.NumberStyles.HexNumber);
+                    string stringmodifier = char.ConvertFromUtf32(hexnum);
+                    Command += array[i] + stringmodifier;
+                 
+                }
+                else
+                {
+                    Command += array[i];
+                }
+            }
+            return Command;
+        }
     }
 }
 
