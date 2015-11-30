@@ -257,7 +257,7 @@ namespace Color_Chat
                             Command += "'";
                         return;
                     }
-                    if (args.WParam == 191)
+                    if (args.WParam == 191 || args.WParam == 193)
                     {
                         if (Game.IsKeyDown(16))
                         {
@@ -444,6 +444,26 @@ namespace Color_Chat
                         return;
                     }
 
+                    if (args.WParam == 107)
+                    {
+                        Command = "+";
+                        return;
+                    }
+                    if (args.WParam == 109)
+                    {
+                        Command = "-";
+                        return;
+                    }
+                    if (args.WParam == 106)
+                    {
+                        Command = "*";
+                        return;
+                    }
+                    if (args.WParam == 219)
+                    {
+                        Command = "é";
+                        return;
+                    }
                     if (Game.IsKeyDown(16))
                     {
                         Command += Utils.KeyToText((uint)args.WParam).ToUpper();
