@@ -46,7 +46,7 @@ namespace Color_Chat
             var menu_utama = new Menu("Options", "opsi");
             menu_utama.AddItem(new MenuItem("EnableColor", "EnableColor").SetValue(true));
             menu_utama.AddItem(new MenuItem("Color", "Color").SetValue(new StringList(new[] { "Olive", "Pink", "Red","Orange","Dark Yellow","Light Green","Purple","Grey","Green","Blue","White","Rainbow","Hot Pink","Vibrant Orange","Violet","Redish Pink" })));
-            //menu_utama.AddItem(new MenuItem("Russia", "Russia").SetValue(true));
+            menu_utama.AddItem(new MenuItem("Russia", "Russia").SetValue(true));
             Menu.AddSubMenu(menu_utama);
             Menu.AddToMainMenu();
             Game.PrintMessage("Colored Chat by <font color='#ff1111'>Spyware293</font> Loaded !!", MessageType.LogMessage);
@@ -211,10 +211,10 @@ namespace Color_Chat
                         {
                             return;
                         }
-                        //if (Menu.Item("Russia").GetValue<bool>())
-                        //{
-                            //Command = Romanize(Command);
-                        //}
+                        if (Menu.Item("Russia").GetValue<bool>())
+                        {
+                            Command = Romanize(Command);
+                        }
                         if (Menu.Item("Color").GetValue<StringList>().SelectedIndex == (int)color.Rainbow)
                         {
                             Command = space(Command);

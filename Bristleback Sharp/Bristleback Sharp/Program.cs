@@ -4,6 +4,7 @@ using Ensage;
 using Ensage.Common;
 using Ensage.Common.Extensions;
 using Ensage.Common.Menu;
+using SharpDX;
 
 namespace Bristleback_Sharp
 {
@@ -21,7 +22,7 @@ namespace Bristleback_Sharp
             Game.OnWndProc += Game_OnWndProc;
             Game.PrintMessage("Bristleback Sharp by <font color='#ff1111'>Spyware293</font> Loaded !!", MessageType.LogMessage);
             var menu_utama = new Menu("Options", "opsi");
-            menu_utama.AddItem(new MenuItem("Quill", "Quill").SetValue(new StringList(new[] { "Max", "Optimal", "Disable" })));
+            menu_utama.AddItem(new MenuItem("Quill", "Quill").SetValue(new StringList(new[] { "Max", "Smart", "Disable" })));
             menu_utama.AddItem(new MenuItem("enable", "enable").SetValue(true));
             Menu.AddSubMenu(menu_utama);
             Menu.AddToMainMenu();
@@ -40,9 +41,14 @@ namespace Bristleback_Sharp
                 }
             }
         }
+        private static float GetDistance2D(Vector3 hero, Vector3 enemy)
+        {
+            return (float)Math.Sqrt(Math.Pow(hero.X - enemy.X, 2) + Math.Pow(hero.Y - enemy.Y, 2));
+        }
         public static void Game_OnUpdate(EventArgs args)
         {
             _source = ObjectMgr.LocalHero;
+            var _enemy = ObjectMgr.GetEntities<Hero>().Where(hero => hero.IsAlive && !hero.IsIllusion && hero.IsVisible && hero.Team != _source.Team);
             if (!Game.IsInGame||Game.IsPaused||Game.IsWatchingGame)
             {
                 return;
@@ -92,7 +98,18 @@ namespace Bristleback_Sharp
                 Quill.UseAbility();
                 Utils.Sleep(150 + Game.Ping, "quill");
             }
-       
+            if (Menu.Item("Quill").GetValue<StringList>().SelectedIndex == 1 && Quill.CanBeCasted() && _source.CanCast() && Utils.SleepCheck("quill") && !_source.IsChanneling() && !_source.IsInvisible())
+            {
+                foreach (var enemy in _enemy)
+                {
+                    if (GetDistance2D(enemy.Position, _source.Position) < Quill.CastRange)
+                    {
+                        Quill.UseAbility();
+                        Utils.Sleep(150 + Game.Ping, "quill");
+                    }
+                }
+                
+            }
             if (chase && Menu.Item("enable").GetValue<bool>())
             {
                 _target = _source.ClosestToMouseTarget(1000);
@@ -112,6 +129,11 @@ namespace Bristleback_Sharp
                     {
                         medallion.UseAbility(_target);
                         Utils.Sleep(150 + Game.Ping, "item_medal");
+                    }
+                    if (atos != null && atos.CanBeCasted() && Utils.SleepCheck("item_atos") && !linken)
+                    {
+                        medallion.UseAbility(_target);
+                        Utils.Sleep(150 + Game.Ping, "item_atos");
                     }
                     if (solar != null && solar.CanBeCasted() && Utils.SleepCheck("item_solar") && !linken)
                     {
@@ -133,7 +155,7 @@ namespace Bristleback_Sharp
                         _source.Attack(_target);
                         Utils.Sleep(Game.Ping + 150, "animationatk");
                     }
-                    if (Menu.Item("Quill").GetValue<StringList>().SelectedIndex == 1 && Quill.CanBeCasted() && Utils.SleepCheck("quill"))
+                    if (Quill.CanBeCasted() && Utils.SleepCheck("quill"))
                     {
                         Quill.UseAbility();
                         Utils.Sleep(150 + Game.Ping, "quill");
