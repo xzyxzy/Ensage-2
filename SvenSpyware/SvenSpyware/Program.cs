@@ -46,7 +46,7 @@ namespace SvenSpyware
                 ulti = me.Spellbook.Spell4;
 
             if (Lompat == null)
-                Lompat = me.FindItem("item_Lompat");
+                Lompat = me.FindItem("item_blink");
             if (armlet == null)
                 armlet = me.FindItem("item_armlet");
             if (mjollnir == null)
