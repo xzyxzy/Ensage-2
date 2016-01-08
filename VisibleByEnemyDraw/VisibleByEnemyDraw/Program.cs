@@ -35,7 +35,9 @@ namespace VisibleByEnemyDraw
             item = new MenuItem("buildings", "Check buildings").SetValue(true);
 
             Menu.AddItem(item);
-
+            Menu.AddItem(new MenuItem("fontsize", "fontsize").SetValue(new Slider(15, 0, 100)));
+            Menu.AddItem(new MenuItem("xpos", "xpos").SetValue(new Slider(-80, -200, 100)));
+            Menu.AddItem(new MenuItem("ypos", "ypos").SetValue(new Slider(100, -100, 100)));
             Menu.AddToMainMenu();
 
             Drawing.OnDraw += Game_OnDraw;
@@ -73,11 +75,11 @@ namespace VisibleByEnemyDraw
                     Vector2 screenPos;
                     var pos = unit.Position + new Vector3(0, 0, unit.HealthBarOffset);
                     Drawing.WorldToScreen(pos, out screenPos);
-                    var start = screenPos + new Vector2(-51, -40);
+                    var start = screenPos + new Vector2(Menu.Item("xpos").GetValue<Slider>().Value, Menu.Item("ypos").GetValue<Slider>().Value);
                     var text = "Visible";
                     var textSize = Drawing.MeasureText(text, "Arial", new Vector2(10, 150), FontFlags.None);
                     var textPos = start + new Vector2(51 - textSize.X / 2, -textSize.Y / 2 + 2);
-                    Drawing.DrawText(text, "Arial", textPos, new Vector2(10, 150), Color.Red, FontFlags.AntiAlias | FontFlags.DropShadow);
+                    Drawing.DrawText(text, "Arial", textPos, new Vector2(Menu.Item("fontsize").GetValue<Slider>().Value, 150), Color.Red, FontFlags.AntiAlias | FontFlags.DropShadow);
                 }
                 else
                 {
