@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using Ensage;
 using Ensage.Common.Extensions;
@@ -78,8 +78,13 @@ namespace SvenSpyware
 
                         var linkens = target.Modifiers.Any(x => x.Name == "modifier_item_spheretarget") || target.Inventory.Items.Any(x => x.Name == "item_sphere");
 
-
-
+                        if (Lompat != null && Lompat.CanBeCasted() && me.Distance2D(target) > 300 && me.Distance2D(target) <= 1170 && Utils.SleepCheck("Lompat1"))
+                        {
+                            Lompat.UseAbility(target.Position);
+                            Utils.Sleep(150 + Game.Ping, "Lompat1");
+                        }
+                        if (me.Distance2D(target) < 300)
+                        {
                         if (bladeMail != null && bladeMail.CanBeCasted() && Utils.SleepCheck("blademail"))
                         {
                             bladeMail.UseAbility();
@@ -97,21 +102,10 @@ namespace SvenSpyware
                             Utils.Sleep(150 + Game.Ping, "armlet1");
                         }
 
-                        if (mjollnir != null && mjollnir.CanBeCasted() && Utils.SleepCheck("mjollnir"))
-                        {
-                            mjollnir.UseAbility(me);
-                            Utils.Sleep(150 + Game.Ping, "mjollnir");
-                        }
-
                         if (ulti.CanBeCasted() && Utils.SleepCheck("ulti"))
                         {
                             ulti.UseAbility();
                             Utils.Sleep(150 + Game.Ping, "ulti");
-                        }
-                        if (armor.CanBeCasted() && Utils.SleepCheck("armor"))
-                        {
-                            armor.UseAbility();
-                            Utils.Sleep(150 + Game.Ping, "armor");
                         }
                         Utils.ChainStun(me, 100, null, false);
 
@@ -123,15 +117,36 @@ namespace SvenSpyware
 
                         Utils.ChainStun(me, 200, null, false);
 
-                        if (Lompat != null && Lompat.CanBeCasted() && me.Distance2D(target) > 300 && me.Distance2D(target) <= 1170 && Utils.SleepCheck("Lompat1"))
-                        {
-                            Lompat.UseAbility(target.Position);
-                            Utils.Sleep(150 + Game.Ping, "Lompat1");
-                        }
-
                         if (!ulti.CanBeCasted())
                             Utils.ChainStun(me, 200, null, false);
 
+                        if (armlet != null && Utils.SleepCheck("armlet") && me.CanCast() && armlet.IsToggled && (target == null || !target.IsAlive || !target.IsVisible))
+                        {
+                            armlet.ToggleAbility();
+                            Utils.Sleep(150 + Game.Ping, "armlet");
+                        }
+}
+                        if ((me.Distance2D(target) < 1300 && Lompat != null && Lompat.CanBeCasted()) || me.Distance2D(target) < 700)
+                        if (mjollnir != null && mjollnir.CanBeCasted() && Utils.SleepCheck("mjollnir"))
+                        {
+                            mjollnir.UseAbility(me);
+                            Utils.Sleep(150 + Game.Ping, "mjollnir");
+                        }
+                        if (solar != null && solar.CanBeCasted() && Utils.SleepCheck("solar"))
+                        {
+                            solar.UseAbility(target);
+                            Utils.Sleep(200 + Game.Ping, "solar");
+                        }
+                        if (medallion != null && medallion.CanBeCasted() && Utils.SleepCheck("medallion"))
+                        {
+                            medallion.UseAbility(target);
+                            Utils.Sleep(150 + Game.Ping, "medallion");
+                        }
+                        if (dust != null && dust.CanBeCasted() && (target.CanGoInvis() || target.IsInvisible()) && Utils.SleepCheck("dust"))
+                        {
+                            dust.UseAbility();
+                            Utils.Sleep(200 + Game.Ping, "dust");
+                        }
                         if (abyssal != null && abyssal.CanBeCasted() && Utils.SleepCheck("abyssal"))
                         {
                             abyssal.UseAbility(target);
@@ -141,41 +156,17 @@ namespace SvenSpyware
                         if (abyssal != null)
                             Utils.ChainStun(me, 310, null, false);
 
-                        if (medallion != null && medallion.CanBeCasted() && Utils.SleepCheck("medallion"))
-                        {
-                            medallion.UseAbility(target);
-                            Utils.Sleep(150 + Game.Ping, "medallion");
-                        }
-
-                        if (solar != null && solar.CanBeCasted() && Utils.SleepCheck("solar"))
-                        {
-                            solar.UseAbility(target);
-                            Utils.Sleep(200 + Game.Ping, "solar");
-                        }
-
-                        if (dust != null && dust.CanBeCasted() && (target.CanGoInvis() || target.IsInvisible()) && Utils.SleepCheck("dust"))
-                        {
-                            dust.UseAbility();
-                            Utils.Sleep(200 + Game.Ping, "dust");
-                        }
-
                         if (stun.CanBeCasted() && me.CanAttack() && !target.IsInvul() && Utils.SleepCheck("stun") && !linkens)
                         {
                             stun.UseAbility(target);
                             Utils.Sleep(150 + Game.Ping, "stun");
                         }
-
-                        if (!stun.CanBeCasted() && Utils.SleepCheck("attack2"))
+                        if (armor.CanBeCasted() && Utils.SleepCheck("armor"))
                         {
-                            me.Attack(target);
-                            Utils.Sleep(Game.Ping + 1000, "attack2");
+                            armor.UseAbility();
+                            Utils.Sleep(150 + Game.Ping, "armor");
                         }
 
-                        if (armlet != null && Utils.SleepCheck("armlet") && me.CanCast() && armlet.IsToggled && (target == null || !target.IsAlive || !target.IsVisible))
-                        {
-                            armlet.ToggleAbility();
-                            Utils.Sleep(150 + Game.Ping, "armlet");
-                        }
 
                     }
                     else
@@ -183,11 +174,6 @@ namespace SvenSpyware
                         if (armlet != null && !armlet.IsActivated)
                         {
                             armlet.ToggleAbility();
-                        }
-                        if (Utils.SleepCheck("attack1"))
-                        {
-                            me.Attack(target);
-                            Utils.Sleep(1000, "attack1");
                         }
                     }
                 }
